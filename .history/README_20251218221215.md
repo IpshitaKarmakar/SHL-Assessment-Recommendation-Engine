@@ -1,0 +1,136 @@
+
+# SHL-Assessment-Recommendation-Engine
+Research Intern Assignment – Option 1
+1. Assessment Selection Rationale
+SHL provided two assessment options:
+Assessment Recommendation Engine using SHL’s product catalogue
+Grammar Scoring Engine from Voice Samples
+I selected Option 1 because it closely aligns with:
+SHL’s core business of talent assessment and psychometrics
+Large-scale recommendation and retrieval problems
+Real-world research challenges in semantic matching, ranking, and evaluation
+This option allows demonstrating both research thinking and production-oriented system design, which are essential for an AI Research Intern role.
+
+3. Problem Understanding
+The task is to recommend appropriate SHL assessments for a given hiring requirement or job description.
+Challenges include:
+Free-text inputs with varied wording
+Large catalog of assessments
+Need for semantic understanding rather than keyword matching
+Scalability and low-latency retrieval
+The goal is to design a system that:
+Understands intent from natural language queries
+Retrieves relevant assessments
+Ranks them meaningfully
+Is reproducible and extensible
+
+4. High-Level Approach
+The solution is designed as a semantic retrieval system consisting of:
+Assessment Representation
+Query Representation
+Vector Similarity Search
+Ranking & Recommendation API
+Evaluation Framework
+This mirrors how real-world recommendation systems are built in production.
+
+5. Semantic Embedding Approach
+To move beyond keyword matching:
+Text embeddings are generated using Sentence Transformers
+Both assessment descriptions and queries are embedded into the same vector space
+This enables semantic similarity matching even when wording differs
+Example:
+“Python backend developer”
+Both map close in embedding space.
+
+6. Scalable Retrieval using FAISS
+To ensure efficiency:
+FAISS is used for nearest-neighbor vector search
+Assessment embeddings are indexed once
+Query embeddings are matched in real time
+This ensures:
+Fast retrieval
+Scalable performance
+Suitability for large catalogs
+
+7. API Design
+The system is exposed via a REST API using FastAPI.
+
+Endpoints
+Health Check
+GET /health
+
+Recommendation Endpoint
+POST /recommend
+
+Request
+{
+  "query": "Python backend developer"
+}
+
+Response
+{
+  "recommended_assessments": [
+    {
+      "name": "Python (New)",
+      "url": "...",
+      "description": "...",
+      "test_type": ["Knowledge & Skills"],
+      "duration": 20,
+      "adaptive_support": "No",
+      "remote_support": "Yes"
+    }
+  ]
+}
+
+This API design is clean, extensible, and suitable for deployment.
+
+8. Evaluation Methodology
+Metric Used: Recall@10
+The system is evaluated using Recall@10, a standard metric for recommender systems.
+Evaluation Process:
+Define representative hiring queries
+Retrieve top-10 recommendations per query
+Check whether at least one relevant assessment appears in the top-10
+Formula:
+Recall@10 = (Number of queries with ≥1 relevant result in top 10) / (Total queries)
+This evaluates whether the system retrieves meaningful results early, which is crucial for user satisfaction.
+
+9. Submission Generation
+To demonstrate reproducibility:
+Assessment names are used as queries
+The recommendation API is invoked programmatically
+Results are stored in a CSV file with ranking
+CSV Format
+query,assessment_url,rank
+This format is suitable for automated evaluation and benchmarking.
+
+10. Assumptions and Design Choices
+Focused on semantic relevance rather than exact catalog replication
+Metadata enrichment is rule-based for consistency
+Prioritized clarity, scalability, and reproducibility
+Designed the system to be easily extensible with new assessments
+
+11. Conclusion
+This project demonstrates:
+Strong problem understanding
+Research-oriented thinking
+Practical system design
+Scalable semantic retrieval
+Clean evaluation methodology
+The solution closely mirrors real-world assessment recommendation systems and aligns with SHL’s domain and research focus.
+
+12. How to Run the System
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+Go to the another terminal and paste the below comment then you will see the automated 
+python evaluation/evaluate.py
+python evaluation/generate_submission.py
+
+SETUP (Python 3.9)
+
+1. python -m venv venv
+2. venv\Scripts\activate
+3. pip install -r requirements.txt
+4. uvicorn app.main:app --reload
+5. Open http://127.0.0.1:8000/docs
+

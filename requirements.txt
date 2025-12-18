@@ -1,0 +1,14 @@
+fastapi==0.95.2
+starlette==0.27.0
+pydantic==1.10.13
+
+uvicorn
+pandas
+requests
+numpy
+faiss-cpu
+torch
+
+sentence-transformers==2.6.1
+transformers==4.38.2
+huggingface-hub==0.24.7
